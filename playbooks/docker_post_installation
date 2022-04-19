@@ -1,0 +1,13 @@
+---
+- hosts: k8s
+  become: true
+
+  tasks:
+  - name: Ensure group "docker" exists
+    ansible.builtin.group:
+      name: docker
+      state: present
+  - name: Add the user 'ubuntu'  to group of 'docker'
+    ansible.builtin.user:
+      name: ubuntu
+      group: docker
