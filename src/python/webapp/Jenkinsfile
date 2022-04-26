@@ -8,11 +8,13 @@ pipeline {
             steps{
                 echo "START DOCKER IMAGE BUILD"
             }
+        }
         stage("docker-push") {
 
             steps{
                 echo "PUSH DOCKER IMAGE BUILD"   
             }
+        }
         stage("deploy") {
 
             steps{
