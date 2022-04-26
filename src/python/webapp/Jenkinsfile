@@ -1,25 +1,49 @@
 pipeline {
-    agent any
 
-    stages {
+  environment {
+    dockerimagename = "arieltar/flaskapp"
+    dockerImage = ""
+  }
 
-        stage("build") {
+  agent any
 
-            steps{
-                echo "START DOCKER IMAGE BUILD"
-            }
-        }
-        stage("docker-push") {
+  stages {
 
-            steps{
-                echo "PUSH DOCKER IMAGE BUILD"   
-            }
-        }
-        stage("deploy") {
-
-            steps{
-                echo "DEPLOY NEW DOCKER IMAGE BUILD ON K8S  "
-            }
-        }
+    stage('Checkout Source') {
+      steps {
+        git 'https://github.com/shazforiot/nodeapp_test.git'
+      }
     }
+
+    stage('Build image') {
+      steps{
+        script {
+          dockerImage = docker.build dockerimagename
+        }
+      }
+    }
+
+    stage('Pushing Image') {
+      environment {
+               registryCredential = 'dockerhub-reg'
+           }
+      steps{
+        script {
+          docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
+            dockerImage.push("latest")
+          }
+        }
+      }
+    }
+
+    stage('Deploying App to Kubernetes') {
+      steps {
+        script {
+          kubernetesDeploy(configs: "deploymentservice.yml", kubeconfigId: "kubernetes")
+        }
+      }
+    }
+
+  }
+
 }
