@@ -11,7 +11,7 @@ pipeline {
 
     stage('Checkout Source') {
       steps {
-        git url: 'https://github.com/naiveskill/devops_cred.git', branch: 'main',
+        git url: 'https://github.com/finance-dataspider/devops.git', branch: 'main',
                  credentialsId: 'github creds'
       }
     }
