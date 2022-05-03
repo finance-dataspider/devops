@@ -4,10 +4,22 @@ metadata:
   name: flask-test-service
   namespace: web-app
 spec:
+  allocateLoadBalancerNodePorts: true
+  externalTrafficPolicy: Cluster
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - nodePort: 31700
+    port: 5000
+    protocol: TCP
+    targetPort: 5000
   selector:
     app: flask-test-app
-  ports:
-  - protocol: "TCP"
-    port: 6000
-    targetPort: 5000
+  sessionAffinity: None
   type: LoadBalancer
+status:
+  loadBalancer:
+    ingress:
+    - ip: 20.81.1.254
