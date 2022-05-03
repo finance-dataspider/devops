@@ -18,21 +18,24 @@ pipeline {
     stage('Build image') {
       steps{
         script {
-          def version = readFile('VERSION')
-          def versions = version.split('\\.')
-          def major = versions[0]
-          def minor = versions[0] + '.' + versions[1]
-          def patch = version.trim()
-          docker.withRegistry('', 'dockerhub-reg') {
-              def image = docker.build('arieltar/flaskapp:latest')
-              image.push()
-              image.push(major)
-              image.push(minor)
-              image.push(patch)
-            }            
+          dockerImage = docker.build(dockerimagename,"./src/python/webapp/")
+        }
+      }
+    }
+
+    stage('Pushing Image') {
+      environment {
+               registryCredential = 'dockerhub-reg'
+           }
+      steps{
+        script {
+          docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
+            dockerImage.push("latest")
           }
         }
       }
+    }
+
     stage('Deploying App to Kubernetes') {
       steps {
         script {
