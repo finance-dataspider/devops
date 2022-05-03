@@ -17,6 +17,6 @@ spec:
       containers:
       - name: flask-test-app
         image: arieltar/flaskapp:latest
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
         - containerPort: 5000
