@@ -18,8 +18,8 @@ pipeline {
     stage('Build image') {
       steps{
         script {
-          def version = readFile('version')
-          def versions = version.split('\\.')
+          env.version = readFile('version')
+          env.versions = version.split('\\.')
           def major = versions[0]
           def minor = versions[0] + '.' + versions[1]
           def patch = version.trim()
