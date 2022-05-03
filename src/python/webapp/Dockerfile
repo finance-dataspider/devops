@@ -4,4 +4,5 @@ RUN mkdir /app
 
 COPY requirements.txt .
 RUN pip install -r requirements.txt
+COPY app.py /app/.
 CMD ["python", "/app/app.py"]
