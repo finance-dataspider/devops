@@ -1,6 +1,7 @@
-FROM python:3.7
+FROM python:3.7-slim AS compile-image
 RUN mkdir /app
-WORKDIR /app/
-ADD . /app/
+
+
+COPY requirements.txt .
 RUN pip install -r requirements.txt
 CMD ["python", "/app/app.py"]

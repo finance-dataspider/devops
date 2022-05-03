@@ -1,0 +1,57 @@
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: azurefile-sc
+  namespace: dbs
+provisioner: kubernetes.io/azure-file
+mountOptions:
+  - dir_mode=0777
+  - file_mode=0777
+  - uid=0
+  - gid=0
+  - mfsymlinks
+  - cache=strict
+parameters:
+  skuName: Standard_LRS
+  location: eastus
+  storageAccount: fbd69ffc7eaf94983a69589
+  resourceGroup: aks_rg
+  secretNamespace: "default"
+  secretName: azure-secret
+reclaimPolicy: Retain
+allowVolumeExpansion: true
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mongo-pv
+  labels:
+    usage: mongo-pv
+spec:
+  storageClassName: azurefile-sc
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  azureFile:
+    secretName: azure-secret
+    shareName: mongofs
+    readOnly: false
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongo-pvc
+  namespace: dbs
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: azurefile-sc
+  resources:
+    requests:
+      storage: 1Gi
+  selector:
+    # To make sure we match the claim with the exact volume, match the label
+    matchLabels:
+      usage: mongo-pv

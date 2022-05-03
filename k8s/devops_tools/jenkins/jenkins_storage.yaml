@@ -1,37 +1,19 @@
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
-  name: local-storage
-provisioner: kubernetes.io/no-provisioner
-volumeBindingMode: WaitForFirstConsumer
-
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: jenkins-pv-volume
-  labels:
-    type: local
-spec:
-  storageClassName: local-storage
-  claimRef:
-    name: jenkins-pv-claim
-    namespace: devops-tools
-  capacity:
-    storage: 10Gi
-  accessModes:
-    - ReadWriteOnce
-  local:
-    path: /mnt
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-      - matchExpressions:
-        - key: kubernetes.io/hostname
-          operator: In
-          values:
-          - k8s-slave-1
-
+  name: my-azurefile
+provisioner: file.csi.azure.com
+allowVolumeExpansion: true
+mountOptions:
+  - dir_mode=0777
+  - file_mode=0777
+  - uid=0
+  - gid=0
+  - mfsymlinks
+  - cache=strict
+  - actimeo=30
+parameters:
+  skuName: Standard_LRS
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -39,7 +21,7 @@ metadata:
   name: jenkins-pv-claim
   namespace: devops-tools
 spec:
-  storageClassName: local-storage
+  storageClassName: azurefile
   accessModes:
     - ReadWriteOnce
   resources:
