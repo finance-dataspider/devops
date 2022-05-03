@@ -29,8 +29,10 @@ pipeline {
               image.push(major)
               image.push(minor)
               image.push(patch)
+            }            
+          }
+        }
       }
-    }
     stage('Deploying App to Kubernetes') {
       steps {
         script {
