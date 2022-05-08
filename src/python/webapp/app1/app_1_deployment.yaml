@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: app1
-        image: arieltar/flaskapp1:latest
+        image: arieltar/flaskapp1
         imagePullPolicy: Always
         ports:
         - containerPort: 5000
