@@ -2,21 +2,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: flask-test-app
+  name: app2
   namespace: web-app
 spec:
   selector:
     matchLabels:
-      app: flask-test-app
+      app: app2
   replicas: 2
   template:
     metadata:
       labels:
-        app: flask-test-app
+        app: app2
     spec:
       containers:
-      - name: flask-test-app
-        image: arieltar/flaskapp:latest
+      - name: app2
+        image: arieltar/flaskapp2:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 5000

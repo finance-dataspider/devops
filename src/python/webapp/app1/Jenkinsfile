@@ -1,0 +1,49 @@
+pipeline {
+
+  environment {
+    dockerimagename = "arieltar/flaskapp1"
+    dockerImage = ""
+  }
+
+  agent any
+
+  stages {
+
+    stage('Checkout Source') {
+      steps {
+        git 'https://github.com/finance-dataspider/devops.git'
+      }
+    }
+
+    stage('Build image') {
+      steps{
+        script {
+          dockerImage = docker.build(dockerimagename,"./src/python/webapp/app1")
+        }
+      }
+    }
+
+    stage('Pushing Image') {
+      environment {
+               registryCredential = 'dockerhub-reg'
+           }
+      steps{
+        script {
+          docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
+            dockerImage.push("latest")
+          }
+        }
+      }
+    }
+
+    stage('Deploying App to Kubernetes') {
+      steps {
+        script {
+          kubernetesDeploy(configs: "src/python/webapp/app1/app_1_deployment.yaml", kubeconfigId: "kubernetes")
+        }
+      }
+    }
+
+  }
+
+}

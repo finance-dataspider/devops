@@ -1,7 +1,7 @@
 pipeline {
 
   environment {
-    dockerimagename = "arieltar/flaskapp"
+    dockerimagename = "arieltar/flaskapp2"
     dockerImage = ""
   }
 
@@ -18,7 +18,7 @@ pipeline {
     stage('Build image') {
       steps{
         script {
-          dockerImage = docker.build(dockerimagename,"./src/python/webapp/")
+          dockerImage = docker.build(dockerimagename,"./src/python/webapp/app2")
         }
       }
     }
@@ -39,7 +39,7 @@ pipeline {
     stage('Deploying App to Kubernetes') {
       steps {
         script {
-          kubernetesDeploy(configs: "src/python/webapp/webapp_deployment.yaml", kubeconfigId: "kubernetes")
+          kubernetesDeploy(configs: "src/python/webapp/app2/app_2_deployment.yaml", kubeconfigId: "kubernetes")
         }
       }
     }
