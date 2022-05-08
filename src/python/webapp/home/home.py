@@ -2,7 +2,7 @@ from flask import Flask,jsonify
 import time
 app = Flask(__name__)
 
-@app.route("/2")
+@app.route("/")
 def hello():
     print('This should be in new image')
     return jsonify("welcome home.")
