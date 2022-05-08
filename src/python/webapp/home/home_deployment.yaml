@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: home
-        image: arieltar/flaskapp2
+        image: arieltar/flask-home
         imagePullPolicy: Always
         ports:
         - containerPort: 5000
