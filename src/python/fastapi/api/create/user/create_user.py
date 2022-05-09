@@ -3,6 +3,6 @@ import pymongo
 
 app = FastAPI()
 
-@app.post("/v1/create/user")
-async def api_v1_users():
+@app.get("/v1/create/user")
+async def api_v1_create_user():
     return {"message": "Hello World"}
