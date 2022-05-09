@@ -1,0 +1,49 @@
+pipeline {
+
+  environment {
+    dockerimagename = "arieltar/api-v1-users"
+    dockerImage = ""
+  }
+
+  agent any
+
+  stages {
+
+    stage('Checkout Source') {
+      steps {
+        git 'https://github.com/finance-dataspider/devops.git'
+      }
+    }
+
+    stage('Build image') {
+      steps{
+        script {
+          dockerImage = docker.build(dockerimagename,"./src/python/fastapi/api/users")
+        }
+      }
+    }
+
+    stage('Pushing Image') {
+      environment {
+               registryCredential = 'dockerhub-reg'
+           }
+      steps{
+        script {
+          docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
+            dockerImage.push("latest")
+          }
+        }
+      }
+    }
+
+    stage('Deploying App to Kubernetes') {
+      steps {
+        script {
+          kubernetesDeploy(configs: "src/python/fastapi/api/users/api_v1_deployment.yaml", kubeconfigId: "kubernetes")
+        }
+      }
+    }
+
+  }
+
+}

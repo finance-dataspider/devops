@@ -1,0 +1,22 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: v1-users
+  namespace: api
+spec:
+  selector:
+    matchLabels:
+      app: v1-users
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: v1-users
+    spec:
+      containers:
+      - name: v1-users
+        image: arieltar/api-v1-users
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
