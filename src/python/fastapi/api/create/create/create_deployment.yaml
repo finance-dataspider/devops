@@ -12,7 +12,7 @@ spec:
   template:
     metadata:
       labels:
-        app: v1-create-user
+        app: v1-create
     spec:
       containers:
       - name: v1-create
