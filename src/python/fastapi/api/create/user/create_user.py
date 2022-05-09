@@ -3,5 +3,5 @@ from fastapi import FastAPI
 app = FastAPI()
 
 @app.get("/v1/create/user")
-async def api_v1():
+async def create_user():
     return {"message": "Hello World"}
