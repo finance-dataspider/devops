@@ -3,7 +3,7 @@ import time
 app = Flask(__name__)
 
 @app.route("/2")
-def hello():
+def webapp_2():
     print('This should be in new image')
     return jsonify("app2! upadte!")
 
