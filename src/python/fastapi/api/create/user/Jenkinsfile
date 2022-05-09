@@ -39,7 +39,7 @@ pipeline {
     stage('Deploying App to Kubernetes') {
       steps {
         script {
-          kubernetesDeploy(configs: "src/python/fastapi/api/create/user/api_create_user_deployment.yaml", kubeconfigId: "kubernetes")
+          kubernetesDeploy(configs: "src/python/fastapi/api/create/user/create_user_deployment.yaml", kubeconfigId: "kubernetes")
         }
       }
     }
