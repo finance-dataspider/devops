@@ -2,21 +2,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: v1-users
+  name: v1-create-user
   namespace: api
 spec:
   selector:
     matchLabels:
-      app: v1-users
+      app: v1-create-user
   replicas: 2
   template:
     metadata:
       labels:
-        app: v1-users
+        app: v1-create-user
     spec:
       containers:
       - name: v1-users
-        image: arieltar/api-v1-users
+        image: arieltar/api-v1-create-user
         imagePullPolicy: Always
         ports:
         - containerPort: 8000
