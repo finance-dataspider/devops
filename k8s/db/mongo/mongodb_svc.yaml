@@ -3,13 +3,10 @@ kind: Service
 metadata:
   name: mongo
   namespace: dbs
-
-  annotations:
-    service.beta.kubernetes.io/azure-dns-label-name: mongo.devops.internal
 spec:
-  type: LoadBalancer
-  ports:
-    - port: 27017
-      targetPort: 27017
   selector:
     app: mongo
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017
