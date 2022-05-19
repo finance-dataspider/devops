@@ -36,7 +36,7 @@ hostAliases: []
 
 image: "docker.elastic.co/kibana/kibana"
 imageTag: "7.17.3"
-imagePullPolicy: "IfNotPresent"
+imagePullPolicy: "Always"
 
 # additionals labels
 labels: {}

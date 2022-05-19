@@ -127,14 +127,22 @@ podSecurityPolicy:
 persistence:
   enabled: false
   annotations: {}
-
+#you must create a config map from a .conf file using : kubectl create configmap {configMap name} --from-file {.conf file path} 
 extraVolumes:
-  []
+- name: algo-1-pipeline
+  configMap:
+        name: algo-1-pipeline
+        items:
+        - key: algo-1.conf   
+          path: algo-1.conf
+
   # - name: extras
   #   emptyDir: {}
 
+#you must mount the configMap in the ./pipeline dir
 extraVolumeMounts:
-  []
+- name: algo-1-pipeline
+  mountPath: /usr/share/logstash/pipeline/
   # - name: extras
   #   mountPath: /usr/share/extras
   #   readOnly: true
